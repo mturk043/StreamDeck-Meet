@@ -42,16 +42,16 @@ class MeetWrapper { // eslint-disable-line
       this.#handleStreamDeckPress(evt.detail.buttonId);
     });
 
-    window.addEventListener('fullscreenchange', () => {
-      this.#drawFullScreenButton();
-    });
+//    window.addEventListener('fullscreenchange', () => {
+//      this.#drawFullScreenButton();
+//    });
 
     window.addEventListener('click', () => {
       if (this.#hasBeenActivated || !navigator.userActivation.isActive) {
         return;
       }
       this.#hasBeenActivated = true;
-      this.#drawFullScreenButton();
+//      this.#drawFullScreenButton();
     });
 
     // Watch for room changes
@@ -91,7 +91,7 @@ class MeetWrapper { // eslint-disable-line
     console.log('*SD-Meet*', 'Room:', this.#currentRoom);
 
     this.#resetButtons();
-    this.#drawFullScreenButton();
+//    this.#drawFullScreenButton();
     this.#drawButton(`start-next`);
     this.#drawButton(`start-instant`);
   }
@@ -107,7 +107,7 @@ class MeetWrapper { // eslint-disable-line
     console.log('*SD-Meet*', 'Room:', this.#currentRoom);
 
     this.#resetButtons();
-    this.#drawFullScreenButton();
+//    this.#drawFullScreenButton();
     this.#drawButton(`enter-meeting`);
     this.#drawButton(`home`);
 
@@ -131,8 +131,12 @@ class MeetWrapper { // eslint-disable-line
     console.log('*SD-Meet*', 'Room:', this.#currentRoom);
 
     this.#resetButtons();
-    this.#drawFullScreenButton();
+//    this.#drawFullScreenButton();
     this.#drawButton(`end-call`);
+    this.#drawButton('partyPopper');
+    this.#drawButton('thumbUp');
+    this.#drawButton('joy');
+    this.#drawButton('crab');
 
     // The timeout is there to make sure the elements have drawn on
     // screen. I should probably use a mutation observer to see when they
@@ -168,7 +172,7 @@ class MeetWrapper { // eslint-disable-line
     console.log('*SD-Meet*', 'Room:', this.#currentRoom);
 
     this.#resetButtons();
-    this.#drawFullScreenButton();
+//    this.#drawFullScreenButton();
     this.#drawButton(`rejoin`);
     this.#drawButton(`home`);
   }
@@ -189,10 +193,10 @@ class MeetWrapper { // eslint-disable-line
     console.log('*SD-Meet*', 'Button Pressed', buttonId);
 
     // Toggle full screen, used in all rooms.
-    if (buttonId === this.#streamDeck.buttonNameToId('fullscreen-on')) {
-      this.#toggleFullScreen();
-      return;
-    }
+//    if (buttonId === this.#streamDeck.buttonNameToId('fullscreen-on')) {
+//      this.#toggleFullScreen();
+//      return;
+//    }
 
     // Available while in the lobby.
     if (this.#currentRoom === this.#ROOM_NAMES.lobby) {
@@ -243,6 +247,14 @@ class MeetWrapper { // eslint-disable-line
         this.#tapCC();
       } else if (buttonId === this.#streamDeck.buttonNameToId('end-call')) {
         this.#tapHangUp();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('partyPopper')) {
+        this.#tapPartyPopper();
+      }  else if (buttonId === this.#streamDeck.buttonNameToId('thumbUp')) {
+         this.#tapThumbUp();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('joy')) {
+         this.#tapJoy();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('crab')) {
+         this.#tapCrab();
       }
       return;
     }
@@ -290,17 +302,17 @@ class MeetWrapper { // eslint-disable-line
   /**
    * Draw buttons for full screen toggle.
    */
-  #drawFullScreenButton() {
-    if (document.fullscreenElement) {
-      this.#drawButton(`fullscreen-on`);
-      return;
-    }
-    if (!navigator.userActivation.isActive) {
-      this.#drawButton(`fullscreen-disabled`);
-      return;
-    }
-    this.#drawButton(`fullscreen-off`);
-  }
+//  #drawFullScreenButton() {
+//    if (document.fullscreenElement) {
+//      this.#drawButton(`fullscreen-on`);
+//      return;
+//    }
+//    if (!navigator.userActivation.isActive) {
+//      this.#drawButton(`fullscreen-disabled`);
+//      return;
+//    }
+//    this.#drawButton(`fullscreen-off`);
+//  }
 
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -458,6 +470,49 @@ class MeetWrapper { // eslint-disable-line
     observer.observe(button, {attributeFilter: ['aria-pressed']});
     this.#updateReactionButton();
   }
+
+
+
+  #setupPartyPopperButton() {
+    const button = this.#getPartyPopperButton();
+    if (!button) {
+      return;
+    }
+    const observer = new MutationObserver(() => {
+      this.#updatePartyPopperButton();
+    });
+    observer.observe(button, {attributeFilter: ['aria-pressed']});
+    this.#updatePartyPopperButton();
+  }
+
+  #setupThumbUpButton() {
+    const button = this.#getThumbUpButton();
+    if (!button) {
+      return;
+    }
+    const observer = new MutationObserver(() => {
+      this.#updateThumbUpButton();
+    });
+    observer.observe(button, {attributeFilter: ['aria-pressed']});
+    this.#updateThumbUpButton();
+  }
+
+  #setupJoyButton() {
+    const button = this.#getJoyButton();
+//    if (!button) {
+//      return;
+//    }
+//    const observer = new MutationObserver(() => {
+//      this.#updateThumbUpButton();
+//    });
+//    observer.observe(button, {attributeFilter: ['aria-pressed']});
+//    this.#updateThumbUpButton();
+  }
+
+//  #setupCrabButton() {
+//    const button = this.#getCrabButton();
+//  }
+
 
   /**
    * Setup the green room mic button.
@@ -622,6 +677,27 @@ class MeetWrapper { // eslint-disable-line
     const img = newVal ? 'reaction-open' : 'reaction';
     this.#drawButton(img);
   }
+
+  #updatePartyPopperButton() {
+    const button = this.#getPartyPopperButton();
+    if (!button) {
+      return;
+    }
+    const newVal = button.getAttribute('aria-pressed') == 'true';
+    const img = newVal ? 'partyPopper' : 'partyPopper';
+    this.#drawButton(img);
+  }
+
+  #updateThumbUpButton() {
+    const button = this.#getThumbUpButton();
+    if (!button) {
+      return;
+    }
+    const newVal = button.getAttribute('aria-pressed') == 'true';
+    const img = newVal ? 'thumbUp' : 'thumbUp';
+    this.#drawButton(img);
+  }
+
 
   /**
    * Update the StreamDeck mic button (green room) to indicate current state.
@@ -790,7 +866,13 @@ class MeetWrapper { // eslint-disable-line
    */
   #getChatButton() {
     const sel = '[data-panel-id="2"]';
-    return document.querySelector(sel);
+    if (document.querySelector(sel)?.querySelector('button')) {
+      return document.querySelector(sel)?.querySelector('button');
+    } else {
+      return document.querySelector(sel);
+    }
+//    return document.querySelector(sel); // finds the open panel button the first time but later gets the whole panel div
+//    return document.querySelector(sel)?.querySelector('button'); // finds the close panel button after first open, and open button after first open
   }
 
   /**
@@ -821,6 +903,40 @@ class MeetWrapper { // eslint-disable-line
   #getReactionBar() {
     const sel = '[jscontroller=tdX73b]';
     return document.querySelector(sel);
+  }
+
+  /**
+   * heart data-emoji="💖"
+   * thumbUp data-emoji="👍"
+   * partyPopper data-emoji="🎉"
+   * clap data-emoji="👏"
+   * joy data-emoji="😂"
+   * astonish data-emoji="😮"
+   * cry data-emoji="😢"
+   * think data-emoji="🤔"
+   * thumb_down data-emoji="👎"
+   * plus_sign data-emoji="➕"
+   * crab data-emoji="🦀"
+   */
+
+  #getPartyPopperButton() {
+    const sel = '[data-emoji="🎉"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getThumbUpButton() {
+    const sel = '[data-emoji="👍"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getJoyButton() {
+    const sel = '[data-emoji="😂"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getCrabButton() {
+    const sel = '[data-emoji="🦀"]';
+    return document.querySelector(sel)?.querySelector('button');
   }
 
   /**
@@ -908,18 +1024,18 @@ class MeetWrapper { // eslint-disable-line
   /**
    * Toggles the tab between full screen and regular.
    */
-  async #toggleFullScreen() {
-    try {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
-      } else {
-        await document.body.requestFullscreen();
-      }
-    } catch (ex) {
-      // Cannot do fullscreen, disable the button.
-      this.#drawButton(`fullscreen-disabled`);
-    }
-  }
+//  async #toggleFullScreen() {
+//    try {
+//      if (document.fullscreenElement) {
+//        await document.exitFullscreen();
+//      } else {
+//        await document.body.requestFullscreen();
+//      }
+//    } catch (ex) {
+//      // Cannot do fullscreen, disable the button.
+//      this.#drawButton(`fullscreen-disabled`);
+//    }
+//  }
 
   /**
    * Starts an instant meeting (lobby).
@@ -1031,6 +1147,26 @@ class MeetWrapper { // eslint-disable-line
   #tapReactions() {
     const button = this.#getReactionButton();
     this.#tapButtonWrapper(button, 'reactions');
+  }
+
+  #tapPartyPopper() {
+    const button = this.#getPartyPopperButton();
+    this.#tapButtonWrapper(button, 'partyPopper');
+  }
+
+  #tapThumbUp() {
+    const button = this.#getThumbUpButton();
+    this.#tapButtonWrapper(button, 'thumbUp');
+  }
+
+  #tapJoy() {
+    const button = this.#getJoyButton();
+    this.#tapButtonWrapper(button, 'joy');
+  }
+
+  #tapCrab() {
+    const button = this.#getCrabButton();
+    this.#tapButtonWrapper(button, 'crab');
   }
 
   /**
