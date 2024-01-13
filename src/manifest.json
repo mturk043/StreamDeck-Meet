@@ -3,11 +3,16 @@
   "version": "0.85",
   "description": "StreamDeck helper for Google Meet",
   "manifest_version": 3,
+  "options_page": "options.html",
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],
       "js": [
         "CanvasToBMP.js",
+        "options.js",
         "StreamDeck.js",
         "StreamDeckMini.js",
         "StreamDeckV1.js",

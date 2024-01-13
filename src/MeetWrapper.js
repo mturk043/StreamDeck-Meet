@@ -915,7 +915,7 @@ class MeetWrapper { // eslint-disable-line
    * cry data-emoji="😢"
    * think data-emoji="🤔"
    * thumb_down data-emoji="👎"
-   * plus_sign data-emoji="➕"
+   * plus data-emoji="➕"
    * crab data-emoji="🦀"
    */
 

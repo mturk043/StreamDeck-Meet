@@ -23,7 +23,8 @@
  * @module StreamDeckV2
  */
 class StreamDeckV2 { // eslint-disable-line
-  static PRODUCT_ID = 0x006d;
+//  static PRODUCT_ID = 0x006d;
+  static PRODUCT_ID = 0x0080;
 
   /*
     3 rows with 5 buttons
@@ -53,6 +54,7 @@ class StreamDeckV2 { // eslint-disable-line
     'reaction-open': 0,
 
     'partyPopper': 1,
+//    ButtonOne : 1,
     'thumbUp': 2,
     'joy': 3,
     'crab': 4,
@@ -95,7 +97,24 @@ class StreamDeckV2 { // eslint-disable-line
    * Constructor
    */
   constructor() {
-  }
+    console.log("in StreamDeckV2.js constructor()");
+//    let {MeetButtonOne = Object.keys(MeetButtonOne)} = chrome.storage.sync.get('MeetButtonOne');
+//    console.log("MeetButtonOne", MeetButtonOne);
+
+//    chrome.storage.sync.get(console.log);
+//    ButtonOne = chrome.storage.sync.get(["MeetButtonOne"]);
+//    chrome.storage.sync.get(function(result){ButtonOne = result.MeetButtonOne)});
+//    console.log("MeetButtonOne: ", chrome.storage.sync.get(["MeetButtonOne"]));
+//    buttonNameToIdMap.set(chrome.storage.sync.get(["MeetButtonOne"]), 1);
+
+//    chrome.storage.sync.get(
+//      {MeetButtonOne: MeetButtonOne}, (items) => {
+//        console.log("MeetButtonOne", items.MeetButtonOne);
+//        buttonNameToIdMap.set(items.MeetButtonOne, 1);
+//      }
+//    );
+//    console.log("buttonNameToIdMap", buttonNameToIdMap);
+  };
 
   /**
    * Set the brightness of the StreamDeck panel.
