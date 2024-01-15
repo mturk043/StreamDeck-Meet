@@ -133,9 +133,16 @@ class MeetWrapper { // eslint-disable-line
     this.#resetButtons();
 //    this.#drawFullScreenButton();
     this.#drawButton(`end-call`);
-    this.#drawButton('partyPopper');
+    this.#drawButton('heart');
     this.#drawButton('thumbUp');
+    this.#drawButton('partyPopper');
+    this.#drawButton('clap');
     this.#drawButton('joy');
+    this.#drawButton('astonish');
+    this.#drawButton('cry');
+    this.#drawButton('think');
+    this.#drawButton('thumbDown');
+    this.#drawButton('plus');
     this.#drawButton('crab');
 
     // The timeout is there to make sure the elements have drawn on
@@ -247,15 +254,30 @@ class MeetWrapper { // eslint-disable-line
         this.#tapCC();
       } else if (buttonId === this.#streamDeck.buttonNameToId('end-call')) {
         this.#tapHangUp();
-      } else if (buttonId === this.#streamDeck.buttonNameToId('partyPopper')) {
-        this.#tapPartyPopper();
+
+      } else if (buttonId === this.#streamDeck.buttonNameToId('heart')) {
+        this.#tapHeart();
       }  else if (buttonId === this.#streamDeck.buttonNameToId('thumbUp')) {
          this.#tapThumbUp();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('partyPopper')) {
+         this.#tapPartyPopper();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('clap')) {
+         this.#tapClap();
       } else if (buttonId === this.#streamDeck.buttonNameToId('joy')) {
-         this.#tapJoy();
-      } else if (buttonId === this.#streamDeck.buttonNameToId('crab')) {
-         this.#tapCrab();
-      }
+       this.#tapJoy();
+     }  else if (buttonId === this.#streamDeck.buttonNameToId('astonish')) {
+        this.#tapAstonish();
+     } else if (buttonId === this.#streamDeck.buttonNameToId('cry')) {
+        this.#tapCry();
+     } else if (buttonId === this.#streamDeck.buttonNameToId('think')) {
+        this.#tapThink();
+     } else if (buttonId === this.#streamDeck.buttonNameToId('thumbDown')) {
+      this.#tapThumbDown();
+    }  else if (buttonId === this.#streamDeck.buttonNameToId('plus')) {
+       this.#tapPlus();
+    } else if (buttonId === this.#streamDeck.buttonNameToId('crab')) {
+       this.#tapCrab();
+    }
       return;
     }
 
@@ -471,49 +493,6 @@ class MeetWrapper { // eslint-disable-line
     this.#updateReactionButton();
   }
 
-
-
-  #setupPartyPopperButton() {
-    const button = this.#getPartyPopperButton();
-    if (!button) {
-      return;
-    }
-    const observer = new MutationObserver(() => {
-      this.#updatePartyPopperButton();
-    });
-    observer.observe(button, {attributeFilter: ['aria-pressed']});
-    this.#updatePartyPopperButton();
-  }
-
-  #setupThumbUpButton() {
-    const button = this.#getThumbUpButton();
-    if (!button) {
-      return;
-    }
-    const observer = new MutationObserver(() => {
-      this.#updateThumbUpButton();
-    });
-    observer.observe(button, {attributeFilter: ['aria-pressed']});
-    this.#updateThumbUpButton();
-  }
-
-  #setupJoyButton() {
-    const button = this.#getJoyButton();
-//    if (!button) {
-//      return;
-//    }
-//    const observer = new MutationObserver(() => {
-//      this.#updateThumbUpButton();
-//    });
-//    observer.observe(button, {attributeFilter: ['aria-pressed']});
-//    this.#updateThumbUpButton();
-  }
-
-//  #setupCrabButton() {
-//    const button = this.#getCrabButton();
-//  }
-
-
   /**
    * Setup the green room mic button.
    */
@@ -677,27 +656,6 @@ class MeetWrapper { // eslint-disable-line
     const img = newVal ? 'reaction-open' : 'reaction';
     this.#drawButton(img);
   }
-
-  #updatePartyPopperButton() {
-    const button = this.#getPartyPopperButton();
-    if (!button) {
-      return;
-    }
-    const newVal = button.getAttribute('aria-pressed') == 'true';
-    const img = newVal ? 'partyPopper' : 'partyPopper';
-    this.#drawButton(img);
-  }
-
-  #updateThumbUpButton() {
-    const button = this.#getThumbUpButton();
-    if (!button) {
-      return;
-    }
-    const newVal = button.getAttribute('aria-pressed') == 'true';
-    const img = newVal ? 'thumbUp' : 'thumbUp';
-    this.#drawButton(img);
-  }
-
 
   /**
    * Update the StreamDeck mic button (green room) to indicate current state.
@@ -919,8 +877,9 @@ class MeetWrapper { // eslint-disable-line
    * crab data-emoji="🦀"
    */
 
-  #getPartyPopperButton() {
-    const sel = '[data-emoji="🎉"]';
+
+  #getHeartButton() {
+    const sel = '[data-emoji="💖"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
@@ -929,8 +888,43 @@ class MeetWrapper { // eslint-disable-line
     return document.querySelector(sel)?.querySelector('button');
   }
 
+  #getPartyPopperButton() {
+    const sel = '[data-emoji="🎉"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getClapButton() {
+    const sel = '[data-emoji="👏"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
   #getJoyButton() {
     const sel = '[data-emoji="😂"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getAstonishButton() {
+    const sel = '[data-emoji="😮"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getCryButton() {
+    const sel = '[data-emoji="😢"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getThinkButton() {
+    const sel = '[data-emoji="🤔"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getThumbDownButton() {
+    const sel = '[data-emoji="👎"]';
+    return document.querySelector(sel)?.querySelector('button');
+  }
+
+  #getPlusButton() {
+    const sel = '[data-emoji="➕"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
@@ -1149,9 +1143,9 @@ class MeetWrapper { // eslint-disable-line
     this.#tapButtonWrapper(button, 'reactions');
   }
 
-  #tapPartyPopper() {
-    const button = this.#getPartyPopperButton();
-    this.#tapButtonWrapper(button, 'partyPopper');
+  #tapHeart() {
+    const button = this.#getHeartButton();
+    this.#tapButtonWrapper(button, 'heart');
   }
 
   #tapThumbUp() {
@@ -1159,9 +1153,44 @@ class MeetWrapper { // eslint-disable-line
     this.#tapButtonWrapper(button, 'thumbUp');
   }
 
+  #tapPartyPopper() {
+    const button = this.#getPartyPopperButton();
+    this.#tapButtonWrapper(button, 'partyPopper');
+  }
+
+  #tapClap() {
+    const button = this.#getClapButton();
+    this.#tapButtonWrapper(button, 'clap');
+  }
+
   #tapJoy() {
     const button = this.#getJoyButton();
     this.#tapButtonWrapper(button, 'joy');
+  }
+
+  #tapAstonish() {
+    const button = this.#getAstonishButton();
+    this.#tapButtonWrapper(button, 'astonish');
+  }
+
+  #tapCry() {
+    const button = this.#getCryButton();
+    this.#tapButtonWrapper(button, 'cry');
+  }
+
+  #tapThink() {
+    const button = this.#getThinkButton();
+    this.#tapButtonWrapper(button, 'think');
+  }
+
+  #tapThumbDown() {
+    const button = this.#getThumbDownButton();
+    this.#tapButtonWrapper(button, 'thumbDown');
+  }
+
+  #tapPlus() {
+    const button = this.#getPlusButton();
+    this.#tapButtonWrapper(button, 'plus');
   }
 
   #tapCrab() {
