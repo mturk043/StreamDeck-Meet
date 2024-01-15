@@ -303,9 +303,14 @@ class MeetWrapper { // eslint-disable-line
       return;
     }
     const buttonId = this.#streamDeck.buttonNameToId(iconName);
-    if (buttonId === undefined || buttonId < 0) {
+//    if (buttonId === undefined || buttonId < 0) {
+    if (buttonId === undefined) {
       console.warn('*SD-Meet*', `drawButton failed, unknown icon name: '${iconName}'`);
       return; // Not defined in the current configuration.
+    }
+    if (buttonId < 0) {
+      console.log('*SD-Meet*', `drawButton called on non-placed icon: '${iconName}'`);
+      return; // icon not set to be drawn in current config
     }
     const iconURL = chrome.runtime.getURL(`ico-svg/${iconName}.svg`);
     this.#streamDeck.fillURL(buttonId, iconURL, true);

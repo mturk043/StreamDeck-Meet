@@ -53,10 +53,17 @@ class StreamDeckV2 { // eslint-disable-line
     'reaction': 0,
     'reaction-open': 0,
 
-    'partyPopper': 1,
-//    ButtonOne : 1,
+
+    'heart': -1,
     'thumbUp': 2,
+    'partyPopper': 1,
+    'clap': -1,
     'joy': 3,
+    'astonish': -1,
+    'cry': -1,
+    'think': -1,
+    'thumbDown': -1,
+    'plus': -1,
     'crab': 4,
 
 
