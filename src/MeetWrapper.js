@@ -884,57 +884,57 @@ class MeetWrapper { // eslint-disable-line
 
 
   #getHeartButton() {
-    const sel = '[data-emoji="💖"]';
+    const sel = 'div.nnCtR [data-emoji="💖"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getThumbUpButton() {
-    const sel = '[data-emoji="👍"]';
+    const sel = 'div.nnCtR [data-emoji="👍"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getPartyPopperButton() {
-    const sel = '[data-emoji="🎉"]';
+    const sel = 'div.nnCtR [data-emoji="🎉"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getClapButton() {
-    const sel = '[data-emoji="👏"]';
+    const sel = 'div.nnCtR [data-emoji="👏"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getJoyButton() {
-    const sel = '[data-emoji="😂"]';
+    const sel = 'div.nnCtR [data-emoji="😂"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getAstonishButton() {
-    const sel = '[data-emoji="😮"]';
+    const sel = 'div.nnCtR [data-emoji="😮"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getCryButton() {
-    const sel = '[data-emoji="😢"]';
+    const sel = 'div.nnCtR [data-emoji="😢"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getThinkButton() {
-    const sel = '[data-emoji="🤔"]';
+    const sel = 'div.nnCtR [data-emoji="🤔"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getThumbDownButton() {
-    const sel = '[data-emoji="👎"]';
+    const sel = 'div.nnCtR [data-emoji="👎"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getPlusButton() {
-    const sel = '[data-emoji="➕"]';
+    const sel = 'div.nnCtR [data-emoji="➕"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
   #getCrabButton() {
-    const sel = '[data-emoji="🦀"]';
+    const sel = 'div.nnCtR [data-emoji="🦀"]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
