@@ -808,7 +808,7 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getInfoButton() {
-    const sel = '[data-panel-id="5"]';
+    const sel = 'div.r6xAKc [data-panel-id="5"]';
     return document.querySelector(sel);
   }
 
@@ -818,7 +818,7 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getPeopleButton() {
-    const sel = '[data-panel-id="1"]';
+    const sel = 'div.r6xAKc [data-panel-id="1"]';
     return document.querySelector(sel);
   }
 
@@ -828,15 +828,9 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getChatButton() {
-    const sel = '[data-panel-id="2"]';
-    if (document.querySelector(sel)?.querySelector('button')) {
-      return document.querySelector(sel)?.querySelector('button');
-    } else {
-      return document.querySelector(sel);
-    }
-//    return document.querySelector(sel); // finds the open panel button the first time but later gets the whole panel div
-//    return document.querySelector(sel)?.querySelector('button'); // finds the close panel button after first open, and open button after first open
-  }
+    const sel = 'div.r6xAKc [data-panel-id="2"]';
+    return document.querySelector(sel);
+   }
 
   /**
    * Get the Activities button in the meeting room.
@@ -844,7 +838,7 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getActivitiesButton() {
-    const sel = '[data-panel-id="10"]';
+    const sel = 'div.ov7jof [data-panel-id="10"]';
     return document.querySelector(sel);
   }
 
