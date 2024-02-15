@@ -788,7 +788,7 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getHandButton() {
-    const sel = '[jscontroller=HRWIlc]';
+    const sel = '[jscontroller=LtjzW]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
