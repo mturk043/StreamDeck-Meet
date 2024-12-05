@@ -94,6 +94,7 @@ class MeetWrapper { // eslint-disable-line
 //    this.#drawFullScreenButton();
     this.#drawButton(`start-next`);
     this.#drawButton(`start-instant`);
+    this.#drawButton(`start-next-now`);
   }
 
   /**
@@ -209,6 +210,8 @@ class MeetWrapper { // eslint-disable-line
     if (this.#currentRoom === this.#ROOM_NAMES.lobby) {
       if (buttonId === this.#streamDeck.buttonNameToId('start-next')) {
         this.#tapStartNextMeeting();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('start-next-now')) {
+        this.#tapStartNextMeetingNow();
       } else if (buttonId === this.#streamDeck.buttonNameToId('start-instant')) { // eslint-disable-line
         this.#tapStartInstantMeeting();
       }
@@ -712,6 +715,20 @@ class MeetWrapper { // eslint-disable-line
   #getStartNextMeetingButton() {
     return document.querySelector('[data-default-focus=true]');
   }
+  /**
+   This returns nil when there is no next meeting scheduled.
+   Consider something that pings this every so often and zeros out the StreamDeck brightness if
+   no next meetings are present for the day.
+  */
+
+  /**
+   * Get the Start Next Meeting button (lobby) where the meeting is happening now.
+   *
+   * @return {?Element}
+   */
+  #getStartNextMeetingNowButton() {
+    return document.querySelector('[data-is-now=true]');
+  }
 
   /**
    * Get the Join Meeting button (green room).
@@ -1044,6 +1061,14 @@ class MeetWrapper { // eslint-disable-line
   #tapStartNextMeeting() {
     const button = this.#getStartNextMeetingButton();
     this.#tapButtonWrapper(button, 'startNext');
+  }
+
+  /**
+   * Starts the next meeting (lobby) where the meeting is happening now.
+   */
+  #tapStartNextMeetingNow() {
+    const button = this.#getStartNextMeetingNowButton();
+    this.#tapButtonWrapper(button, 'startNextNow');
   }
 
   /**

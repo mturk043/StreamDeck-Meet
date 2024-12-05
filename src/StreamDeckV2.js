@@ -40,7 +40,8 @@ class StreamDeckV2 { // eslint-disable-line
 
     // Lobby
     'start-next': 5,
-    'start-instant': 6,
+    'start-next-now': 6,
+    'start-instant': 7,
 
     // Green Room
     'enter-meeting': 5,
