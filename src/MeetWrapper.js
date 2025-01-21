@@ -775,8 +775,8 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getMicButton() {
-    const sel = '[jsname=Dg9Wp]';
-    return document.querySelector(sel)?.querySelector('button');
+    const sel = '[jsname=hw0c9]';
+    return document.querySelector(sel);
   }
 
   /**
@@ -785,8 +785,8 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getCamButton() {
-    const sel = '[jsname=R3GXJb]';
-    return document.querySelector(sel)?.querySelector('button');
+    const sel = '[jsname=psRWwc]';
+    return document.querySelector(sel);
   }
 
   /**
