@@ -1271,9 +1271,16 @@ class MeetWrapper { // eslint-disable-line
       const menuItems = Array.from(document.querySelectorAll('[role="menuitem"], li, button, div'));
       const targetItem = menuItems.find(item => {
         const text = item.textContent || "";
-        return text.includes("Minimize") || 
-               text.includes("Remove tile") || 
-               text.includes("Hide self view");
+        const isButtonOrItem = item.tagName === 'BUTTON' || 
+                               item.getAttribute('role') === 'menuitem' ||
+                               item.tagName === 'LI';
+        // Ensure it's a leaf node that doesn't contain other button/menuitem children
+        const isLeaf = isButtonOrItem && !item.querySelector('button, [role="menuitem"]');
+        return isLeaf && (
+          text.includes("Minimize") || 
+          text.includes("Remove tile") || 
+          text.includes("Hide self view")
+        );
       });
       
       if (targetItem) {
