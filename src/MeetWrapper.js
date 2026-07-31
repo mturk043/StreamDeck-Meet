@@ -1245,7 +1245,10 @@ class MeetWrapper { // eslint-disable-line
       return;
     }
     
-    const selfViewTile = effectsBtn.closest('.CNjCjf') || effectsBtn.parentElement?.parentElement;
+    const selfViewTile = effectsBtn.closest('.HNwH4d') || 
+                         effectsBtn.closest('.wIP0Bc') || 
+                         effectsBtn.closest('.tTdl5d') || 
+                         effectsBtn.parentElement?.parentElement?.parentElement;
     if (!selfViewTile) {
       console.warn('*SD-Meet*', 'Could not find self-view tile container');
       return;
