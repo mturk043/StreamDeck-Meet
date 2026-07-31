@@ -1223,20 +1223,27 @@ class MeetWrapper { // eslint-disable-line
    * Taps the video minimize button, to make self-view go away (meeting room).
    */
   #tapMinimizeVideo() {
-    const addBtn = document.querySelector('[aria-label="Add tile to your screen"]') ||
-                 document.querySelector('[aria-label="Show self view"]');
-                 
-    if (addBtn && !addBtn.closest('[data-participant-id]')) {
-      addBtn.click();
-      console.log('*SD-Meet*', 'Restored self view tile');
+    // 1. Try to find the restore button (Show self view / Add tile)
+    const showBtn = document.querySelector('[aria-label="Show self view"]') ||
+                    document.querySelector('[aria-label="Add tile to your screen"]');
+                  
+    if (showBtn && !showBtn.closest('[data-participant-id]')) {
+      showBtn.click();
+      console.log('*SD-Meet*', 'Directly clicked Show Self View');
       return;
     }
     
-    let selfViewBtn = document.querySelector('[aria-label="Minimize self view"]');
-    if (!selfViewBtn) {
-      selfViewBtn = document.querySelector('[aria-label="Show self view"]');
+    // 2. Try to find the minimize button directly (Minimize self view)
+    const minimizeBtn = document.querySelector('[aria-label="Minimize self view"]');
+    if (minimizeBtn) {
+      minimizeBtn.click();
+      console.log('*SD-Meet*', 'Directly clicked Minimize Self View');
+      return;
     }
     
+    // 3. Fallback: Find the three-dots menu on self-view tile
+    let selfViewBtn = document.querySelector('[aria-label="Minimize self view"]') || 
+                      document.querySelector('[aria-label="Show self view"]');
     if (!selfViewBtn) {
       console.warn('*SD-Meet*', 'Could not find self-view button to locate tile');
       return;
@@ -1265,15 +1272,16 @@ class MeetWrapper { // eslint-disable-line
       const menuItems = Array.from(document.querySelectorAll('[role="menuitem"], li, button, div'));
       const targetItem = menuItems.find(item => {
         const text = item.textContent || "";
-        return text.includes("Remove tile from your screen") || 
-               text.includes("Remove tile");
+        return text.includes("Minimize") || 
+               text.includes("Remove tile") || 
+               text.includes("Hide self view");
       });
       
       if (targetItem) {
         targetItem.click();
-        console.log('*SD-Meet*', 'Hid self view tile');
+        console.log('*SD-Meet*', 'Clicked menu item:', targetItem.textContent);
       } else {
-        console.warn('*SD-Meet*', 'Could not find Remove tile menu item in dropdown');
+        console.warn('*SD-Meet*', 'Could not find Minimize/Remove tile menu item in dropdown');
       }
     }, 50);
   }
