@@ -42,6 +42,8 @@ function addConnectButton() {
   document.body.appendChild(elem);
 }
 
+let meetWrapper = null;
+
 /**
  * Check if the StreamDeck is open, and start the Meet Helper, otherwise
  * show the connect button.
@@ -54,12 +56,29 @@ function startWrapper() {
     if (elem) {
       elem.remove();
     }
-    new MeetWrapper(streamDeck);
+    if (!meetWrapper) {
+      meetWrapper = new MeetWrapper(streamDeck);
+    }
     return true;
   }
   addConnectButton();
   return false;
 }
+
+// Listen to messages from background service worker to turn off lights on system sleep/lock
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'idleStateChanged') {
+    if (streamDeck.isConnected) {
+      if (message.state === 'locked') {
+        console.log('*SD-Meet*', 'System locked/suspended. Powering down Stream Deck lights.');
+        streamDeck.setBrightness(0).catch(err => console.error("Error setting brightness to 0:", err));
+      } else if (message.state === 'active' || message.state === 'idle') {
+        console.log('*SD-Meet*', 'System active. Restoring Stream Deck lights.');
+        streamDeck.setBrightness(90).catch(err => console.error("Error restoring brightness:", err));
+      }
+    }
+  }
+});
 
 /**
  * Initialization, attempts to open the StreamDeck and then the Meet Wrapper.

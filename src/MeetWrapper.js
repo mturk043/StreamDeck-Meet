@@ -64,10 +64,19 @@ class MeetWrapper { // eslint-disable-line
     const bodyObserver = new MutationObserver(() => {
       if (document.querySelector('div[data-meeting-title]')) {
         this.#enterMeeting();
+      } else if (document.querySelector('div.r6xAKc')) {
+        // finds the info button div as first of the info/people/chat/activities divs
+        // not present in other rooms
+//        console.log("*SD-Meet* detected meeting via div.r6xAKc");
+        this.#enterMeeting();
       } else if (document.querySelector('[jscontroller=dyDNGc]')) {
         this.#enterGreenRoom();
       } else if (document.querySelector('[jsname=r4nke]')) {
         this.#enterExitHall();
+      }
+
+      if (this.#currentRoom === this.#ROOM_NAMES.meeting) {
+        this.#updateMinimizeVideoButton();
       }
     });
     bodyObserver.observe(document.body, {attributes: true, childList: true});
@@ -140,7 +149,7 @@ class MeetWrapper { // eslint-disable-line
     this.#drawButton('clap');
     this.#drawButton('joy');
     this.#drawButton('astonish');
-    this.#drawButton('cry');
+    this.#drawButton('minimizeVideo');
     this.#drawButton('think');
     this.#drawButton('thumbDown');
     this.#drawButton('plus');
@@ -160,13 +169,14 @@ class MeetWrapper { // eslint-disable-line
       this.#setupActivitiesButton();
       this.#setupPresentingButton();
       this.#setupReactionButton();
+      this.#setupMinimizeVideoButton();
     }, 500);
 
     // If it was an instant meeting, automatically close
     // the info dialog after 10 seconds.
     setTimeout(() => {
       this.#tapCloseInfoDialog();
-    }, 10 * 1000);
+    }, 1 * 1000);
   }
 
   /**
@@ -245,6 +255,8 @@ class MeetWrapper { // eslint-disable-line
         this.#tapChat();
       } else if (buttonId === this.#streamDeck.buttonNameToId('activities')) {
         this.#tapActivities();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('minimizeVideo')) {
+        this.#tapMinimizeVideo();
       } else if (buttonId === this.#streamDeck.buttonNameToId('present-stop')) {
         this.#tapStopPresenting();
       } else if (buttonId === this.#streamDeck.buttonNameToId('mic')) {
@@ -260,26 +272,26 @@ class MeetWrapper { // eslint-disable-line
 
       } else if (buttonId === this.#streamDeck.buttonNameToId('heart')) {
         this.#tapHeart();
-      }  else if (buttonId === this.#streamDeck.buttonNameToId('thumbUp')) {
-         this.#tapThumbUp();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('thumbUp')) {
+        this.#tapThumbUp();
       } else if (buttonId === this.#streamDeck.buttonNameToId('partyPopper')) {
-         this.#tapPartyPopper();
+        this.#tapPartyPopper();
       } else if (buttonId === this.#streamDeck.buttonNameToId('clap')) {
-         this.#tapClap();
+        this.#tapClap();
       } else if (buttonId === this.#streamDeck.buttonNameToId('joy')) {
-       this.#tapJoy();
-     }  else if (buttonId === this.#streamDeck.buttonNameToId('astonish')) {
+        this.#tapJoy();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('astonish')) {
         this.#tapAstonish();
-     } else if (buttonId === this.#streamDeck.buttonNameToId('cry')) {
+      } else if (buttonId === this.#streamDeck.buttonNameToId('cry')) {
         this.#tapCry();
-     } else if (buttonId === this.#streamDeck.buttonNameToId('think')) {
+      } else if (buttonId === this.#streamDeck.buttonNameToId('think')) {
         this.#tapThink();
-     } else if (buttonId === this.#streamDeck.buttonNameToId('thumbDown')) {
-      this.#tapThumbDown();
-    }  else if (buttonId === this.#streamDeck.buttonNameToId('plus')) {
-       this.#tapPlus();
-    } else if (buttonId === this.#streamDeck.buttonNameToId('crab')) {
-       this.#tapCrab();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('thumbDown')) {
+        this.#tapThumbDown();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('plus')) {
+        this.#tapPlus();
+      } else if (buttonId === this.#streamDeck.buttonNameToId('crab')) {
+        this.#tapCrab();
     }
       return;
     }
@@ -470,6 +482,28 @@ class MeetWrapper { // eslint-disable-line
     observer.observe(button, {attributeFilter: ['aria-pressed']});
     this.#updateActivitiesButton();
   }
+
+  /**
+   * Setup the meeting room activities button.
+   */
+  #setupMinimizeVideoButton() {
+    this.#updateMinimizeVideoButton();
+  }
+
+  /**
+   * Update the StreamDeck self-view minimize button to indicate current state.
+   */
+  #updateMinimizeVideoButton() {
+    if (!this.#streamDeck?.isConnected) {
+      return;
+    }
+    const addBtn = document.querySelector('[aria-label="Add tile to your screen"]') ||
+                   document.querySelector('[aria-label="Show self view"]');
+    const isSelfViewHidden = addBtn && !addBtn.closest('[data-participant-id]');
+    const img = isSelfViewHidden ? 'minimizeVideo-on' : 'minimizeVideo';
+    this.#drawButton(img);
+  }
+
 
   /**
    * Setup the meeting room presenting state button.
@@ -879,6 +913,29 @@ class MeetWrapper { // eslint-disable-line
     return document.querySelector(sel);
   }
 
+
+  /**
+   * Gets the three-dots button in the meeting room.
+   *
+   * @return {?Element}
+   */
+  #getThreeDots() {
+    const sel = '[jscontroller=WjL7X]';
+    return document.querySelector(sel);
+  }
+
+  /**
+   * Gets the minimize video button in the meeting room.
+   *
+   * @return {?Element}
+   */
+  #getMinimizeVideoWindow() {
+    // FIXME
+    const sel = '#ucc-317 > ul > li:nth-child(5)';
+    return document.querySelector(sel);
+  }
+
+
   /**
    * heart data-emoji="💖"
    * thumbUp data-emoji="👍"
@@ -1031,6 +1088,8 @@ class MeetWrapper { // eslint-disable-line
     console.warn('*SD-Meet*', `Unable to find/click button '${buttName}'`);
   }
 
+
+
   /**
    * Toggles the tab between full screen and regular.
    */
@@ -1157,6 +1216,65 @@ class MeetWrapper { // eslint-disable-line
   #tapActivities() {
     const button = this.#getActivitiesButton();
     this.#tapButtonWrapper(button, 'activities');
+  }
+
+  /**
+   * Taps the video minimize button, to make self-view go away (meeting room).
+   */
+  #tapMinimizeVideo() {
+    const addBtn = document.querySelector('[aria-label="Add tile to your screen"]') ||
+                 document.querySelector('[aria-label="Show self view"]');
+                 
+    if (addBtn && !addBtn.closest('[data-participant-id]')) {
+      addBtn.click();
+      console.log('*SD-Meet*', 'Restored self view tile');
+      return;
+    }
+    
+    let selfViewBtn = document.querySelector('[aria-label="Minimize self view"]');
+    if (!selfViewBtn) {
+      selfViewBtn = document.querySelector('[aria-label="Show self view"]');
+    }
+    
+    if (!selfViewBtn) {
+      console.warn('*SD-Meet*', 'Could not find self-view button to locate tile');
+      return;
+    }
+    
+    const selfViewTile = selfViewBtn.closest('[data-participant-id]') || 
+                         selfViewBtn.parentElement?.parentElement?.parentElement;
+                       
+    if (!selfViewTile) {
+      console.warn('*SD-Meet*', 'Could not find self-view tile container');
+      return;
+    }
+    
+    const moreOptionsBtn = selfViewTile.querySelector('[aria-label="More options"]') ||
+                           selfViewTile.querySelector('[aria-label="Tile actions"]') ||
+                           selfViewTile.querySelector('button[aria-haspopup="true"]');
+                         
+    if (!moreOptionsBtn) {
+      console.warn('*SD-Meet*', 'Could not find More Options button on self-view tile');
+      return;
+    }
+    
+    moreOptionsBtn.click();
+    
+    setTimeout(() => {
+      const menuItems = Array.from(document.querySelectorAll('[role="menuitem"], li, button, div'));
+      const targetItem = menuItems.find(item => {
+        const text = item.textContent || "";
+        return text.includes("Remove tile from your screen") || 
+               text.includes("Remove tile");
+      });
+      
+      if (targetItem) {
+        targetItem.click();
+        console.log('*SD-Meet*', 'Hid self view tile');
+      } else {
+        console.warn('*SD-Meet*', 'Could not find Remove tile menu item in dropdown');
+      }
+    }, 50);
   }
 
   /**

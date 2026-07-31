@@ -1,12 +1,17 @@
 {
   "name": "StreamDeck-Meet",
   "version": "0.88",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn7EVH4CiBaFiDm63wqRAif5xXnT2bCHNTVK1GPlkN0K9rjr0GMXu0fbBLgFYzFNRlMfkCWA7EO53ZqeSqFSxSHCN4zkLsALsIM6brBDCWfh3DDCHPam6X8muNH50su1gRd4pb+ksODrpMZyx6lWbgzkIo5GD/jL3av87U+ej+wa/7s6mXNsN4gTnuz9tMbjHnTQSlpRYBseJYZ+YrPALrIBHpggYuK0vQnO1n3xPORdqn4b3BDYkRHpw6apBTCMk4uXO1yVYMCNTo7Via0d0FeemJa1vvISRU2p+AydPqhxFPqrfKblnWzTeWyttpN/81DexiZGpLFWukKiBdt2r+wIDAQAB",
   "description": "StreamDeck helper for Google Meet",
   "manifest_version": 3,
   "options_page": "options.html",
   "permissions": [
-    "storage"
+    "storage",
+    "idle"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],

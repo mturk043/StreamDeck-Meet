@@ -54,28 +54,35 @@ class StreamDeckV2 { // eslint-disable-line
     'reaction': 0,
     'reaction-open': 0,
 
-
+//    reaction emoji section
     'heart': -1,
     'thumbUp': 2,
     'partyPopper': 1,
-    'clap': -1,
+    'clap': 6,
     'joy': 3,
     'astonish': -1,
     'cry': -1,
+    'minimizeVideo': 8,
+    'minimizeVideo-on': 8,
     'think': -1,
-    'thumbDown': -1,
-    'plus': -1,
+    'thumbDown': 7,
+    'plus': 5,
     'crab': 4,
 
-
-    'info': 5,
-    'info-open': 5,
-    'users': 6,
-    'users-open': 6,
-    'cc': 7,
-    'cc-on': 7,
-    'activities': 8,
-    'activities-open': 8,
+//    'info': 5,
+//    'info-open': 5,
+//    'users': 6,
+//    'users-open': 6,
+    'info': -1,
+    'info-open': -1,
+    'cc': -1,
+    'cc-on': -1,
+    'activities': -1,
+    'activities-open': -1,
+    'users': 9,
+    'users-open': 9,
+//    'activities': 8,
+//    'activities-open': 8,
 //    'present-stop': 9,
 //    'blank': 9,
     'chat': 12,
@@ -122,6 +129,16 @@ class StreamDeckV2 { // eslint-disable-line
 //      }
 //    );
 //    console.log("buttonNameToIdMap", buttonNameToIdMap);
+
+//      chrome.storage.sync.get(
+//        {
+//          partyPopper: partyPopper,
+//         },
+//        (items) => {
+//          const partyPopperButtonId = items.partyPopper;
+//        }
+//      );
+//      console.log("partyPopperButtonId: ", partyPopperButtonId);
   };
 
   /**
