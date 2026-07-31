@@ -1223,51 +1223,47 @@ class MeetWrapper { // eslint-disable-line
    * Taps the video minimize button, to make self-view go away (meeting room).
    */
   #tapMinimizeVideo() {
-    // 1. Try to find the restore button (Show self view / Add tile)
+    // 1. Try to find the restore/show button first (Show self view / Add tile)
     const showBtn = document.querySelector('[aria-label="Show self view"]') ||
-                    document.querySelector('[aria-label="Add tile to your screen"]');
+                    document.querySelector('[aria-label="Add tile to your screen"]') ||
+                    Array.from(document.querySelectorAll('button')).find(b => b.getAttribute('aria-label')?.includes('Show self view'));
                   
-    if (showBtn && !showBtn.closest('[data-participant-id]')) {
+    if (showBtn) {
       showBtn.click();
-      console.log('*SD-Meet*', 'Directly clicked Show Self View');
+      console.log('*SD-Meet*', 'Clicked Show Self View / Restore button');
       return;
     }
     
-    // 2. Try to find the minimize button directly (Minimize self view)
-    const minimizeBtn = document.querySelector('[aria-label="Minimize self view"]');
-    if (minimizeBtn) {
-      minimizeBtn.click();
-      console.log('*SD-Meet*', 'Directly clicked Minimize Self View');
+    // 2. Find the unique "Backgrounds and effects" button to locate the self-view container
+    const effectsBtn = Array.from(document.querySelectorAll('button')).find(b => 
+      b.textContent.trim() === 'visual_effects' || 
+      b.getAttribute('aria-label') === 'Backgrounds and effects'
+    );
+    
+    if (!effectsBtn) {
+      console.warn('*SD-Meet*', 'Could not find visual_effects button to locate self-view');
       return;
     }
     
-    // 3. Fallback: Find the three-dots menu on self-view tile
-    let selfViewBtn = document.querySelector('[aria-label="Minimize self view"]') || 
-                      document.querySelector('[aria-label="Show self view"]');
-    if (!selfViewBtn) {
-      console.warn('*SD-Meet*', 'Could not find self-view button to locate tile');
-      return;
-    }
-    
-    const selfViewTile = selfViewBtn.closest('[data-participant-id]') || 
-                         selfViewBtn.parentElement?.parentElement?.parentElement;
-                       
+    const selfViewTile = effectsBtn.closest('.CNjCjf') || effectsBtn.parentElement?.parentElement;
     if (!selfViewTile) {
       console.warn('*SD-Meet*', 'Could not find self-view tile container');
       return;
     }
     
-    const moreOptionsBtn = selfViewTile.querySelector('[aria-label="More options"]') ||
-                           selfViewTile.querySelector('[aria-label="Tile actions"]') ||
-                           selfViewTile.querySelector('button[aria-haspopup="true"]');
+    // 3. Find the "More options" button inside the self-view container
+    const moreOptionsBtn = selfViewTile.querySelector('button[aria-label*="More options"]') ||
+                           Array.from(selfViewTile.querySelectorAll('button')).find(b => b.textContent.trim() === 'more_vert');
                          
     if (!moreOptionsBtn) {
       console.warn('*SD-Meet*', 'Could not find More Options button on self-view tile');
       return;
     }
     
+    // 4. Open the self-view options menu
     moreOptionsBtn.click();
     
+    // 5. Select and click "Minimize" (or fallback actions) from the dropdown list
     setTimeout(() => {
       const menuItems = Array.from(document.querySelectorAll('[role="menuitem"], li, button, div'));
       const targetItem = menuItems.find(item => {
