@@ -498,9 +498,7 @@ class MeetWrapper { // eslint-disable-line
     if (!this.#streamDeck?.isConnected) {
       return;
     }
-    const addBtn = document.querySelector('[aria-label="Add tile to your screen"]') ||
-                   document.querySelector('[aria-label="Show self view"]');
-    const isSelfViewHidden = addBtn && !addBtn.closest('[data-participant-id]');
+    const isSelfViewHidden = !!(document.querySelector('[jsname="ix0Hvc"]') || document.querySelector('[aria-label="Expand"]'));
     const img = isSelfViewHidden ? 'minimizeVideo-on' : 'minimizeVideo';
     this.#drawButton(img);
   }
@@ -1223,14 +1221,14 @@ class MeetWrapper { // eslint-disable-line
    * Taps the video minimize button, to make self-view go away (meeting room).
    */
   #tapMinimizeVideo() {
-    // 1. Try to find the restore/show button first (Show self view / Add tile)
-    const showBtn = document.querySelector('[aria-label="Show self view"]') ||
-                    document.querySelector('[aria-label="Add tile to your screen"]') ||
-                    Array.from(document.querySelectorAll('button')).find(b => b.getAttribute('aria-label')?.includes('Show self view'));
+    // 1. Try to find the restore/show button first (Expand / Show self view)
+    const showBtn = document.querySelector('[jsname="ix0Hvc"]') || 
+                    document.querySelector('[aria-label="Expand"]') ||
+                    document.querySelector('[aria-label="Show self view"]');
                   
     if (showBtn) {
       showBtn.click();
-      console.log('*SD-Meet*', 'Clicked Show Self View / Restore button');
+      console.log('*SD-Meet*', 'Clicked Expand / Restore button');
       return;
     }
     
