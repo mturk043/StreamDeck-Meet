@@ -150,6 +150,7 @@ class MeetWrapper { // eslint-disable-line
     this.#drawButton('joy');
     this.#drawButton('astonish');
     this.#drawButton('minimizeVideo');
+    this.#drawButton('cry');
     this.#drawButton('think');
     this.#drawButton('thumbDown');
     this.#drawButton('plus');
