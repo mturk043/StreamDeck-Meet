@@ -7,7 +7,8 @@
   "options_page": "options.html",
   "permissions": [
     "storage",
-    "idle"
+    "idle",
+    "tabs"
   ],
   "background": {
     "service_worker": "background.js"
