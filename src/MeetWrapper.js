@@ -62,7 +62,7 @@ class MeetWrapper { // eslint-disable-line
     }
 
     const bodyObserver = new MutationObserver(() => {
-      if (document.querySelector('div[data-second-screen]')) {
+      if (document.querySelector('div[data-meeting-title]')) {
         this.#enterMeeting();
       } else if (document.querySelector('[jscontroller=dyDNGc]')) {
         this.#enterGreenRoom();
@@ -753,12 +753,12 @@ class MeetWrapper { // eslint-disable-line
    *
    * @return {?Element}
    */
-    #getMeetingInfoDialogCloseButton() {
-      const dialog = document.querySelector('[jscontroller=Cmkwqf]');
-      if (dialog) {
-        return dialog.querySelector('[aria-label=Close]');
-      }
+  #getMeetingInfoDialogCloseButton() {
+    const dialog = document.querySelector('[jscontroller=Cmkwqf]');
+    if (dialog) {
+      return dialog.querySelector('[aria-label=Close]');
     }
+  }
 
   /**
    * Get the presentation bar container (meeting).
@@ -766,7 +766,7 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getPresentationBar() {
-    return document.querySelector('[jscontroller=A5S1ke]');
+    return document.querySelector('[jscontroller=E9nYD]');
   }
 
   /**
@@ -865,7 +865,7 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getReactionButton() {
-    const sel = '[jscontroller=aTG8jc]';
+    const sel = '[jscontroller=M3NJxf]';
     return document.querySelector(sel)?.querySelector('button');
   }
 
@@ -966,8 +966,8 @@ class MeetWrapper { // eslint-disable-line
    * @return {?Element}
    */
   #getHangupButton() {
-    const sel = '[jsname=CQylAd]';
-    return document.querySelector(sel);
+    const sel = '[jscontroller=m1IMT]';
+    return document.querySelector(sel)?.querySelector('button');
   }
 
   /**
